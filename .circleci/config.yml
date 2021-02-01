@@ -1,0 +1,47 @@
+version: 2.1
+
+orbs:
+  terraform: circleci/terraform@1.2.0
+
+workflows:
+  terraform_plan_and_apply:
+    # Executes 'terraform plan' and waits for user approval on Circle-CI before executing 'terraform apply'.
+    # Only executes on 'development', staging' and 'production' branches.
+    jobs:
+      - plan:
+          filters:
+            branches:
+              only:
+                - development
+                - staging
+                - production
+      - confirm-plan:
+          type: approval
+          requires:
+            - plan
+      - apply:
+          requires:
+            - confirm-plan
+
+jobs:
+  plan:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/plan:
+          backend_config_file: ./setup/backends/$CIRCLE_BRANCH.tf
+          var: environment=$CIRCLE_BRANCH
+          var_file: terraform.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  apply:
+    executor: terraform/default
+    steps:
+      - attach_workspace:
+          at: .
+      - terraform/apply:
+          backend_config_file: ./setup/backends/$CIRCLE_BRANCH.tf
+          var: environment=$CIRCLE_BRANCH
+          var_file: terraform.tfvars
