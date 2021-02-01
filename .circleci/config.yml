@@ -9,6 +9,7 @@ workflows:
     # Only executes on 'development', staging' and 'production' branches.
     jobs:
       - plan:
+          context: terraform
           filters:
             branches:
               only:
@@ -20,6 +21,7 @@ workflows:
           requires:
             - plan
       - apply:
+          context: terraform
           requires:
             - confirm-plan
 
