@@ -16,7 +16,9 @@ module "main" {
   handler = var.handler
   runtime = var.runtime
 
-  environment = {}
+  environment = {
+    MESSAGE = "Hello there"
+  }
 }
 
 data "aws_iam_policy_document" "main" {
