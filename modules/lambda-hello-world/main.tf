@@ -58,7 +58,7 @@ resource "aws_apigatewayv2_stage" "main" {
   auto_deploy = true
 }
 
-resource "aws_apigatewayv2_route" "PostOrganisations" {
+resource "aws_apigatewayv2_route" "main" {
   api_id = aws_apigatewayv2_api.main.id
   route_key = "$default"
   target = "integrations/${aws_apigatewayv2_integration.main.id}"
