@@ -32,8 +32,7 @@ jobs:
       - checkout
       - terraform/plan:
           backend_config_file: ./setup/backends/$CIRCLE_BRANCH.tf
-          var: environment=$CIRCLE_BRANCH
-          var_file: terraform.tfvars
+          var_file: ./$CIRCLE_BRANCH.tfvars
       - persist_to_workspace:
           root: .
           paths:
@@ -45,5 +44,4 @@ jobs:
           at: .
       - terraform/apply:
           backend_config_file: ./setup/backends/$CIRCLE_BRANCH.tf
-          var: environment=$CIRCLE_BRANCH
-          var_file: terraform.tfvars
+          var_file: ./$CIRCLE_BRANCH.tfvars
