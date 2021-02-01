@@ -13,8 +13,3 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
-
-# Test bucket to check promotion
-resource "aws_s3_bucket" "test_bucket" {
-  bucket_prefix = "${var.environment}-test-bucket-"
-}
